@@ -1,0 +1,49 @@
+Creating Tensors:
+           string=tf.Variable("This is a string", tf.string)
+           syntax : var_name = tf.Variable("data or object", tf.data_type)
+
+Rank/Degree of Tensors:
+           rank1_tensor = tf.Variable(['test','ok'], tf.string)
+           rank2_tensor = tf.Variable([["test","ok"],["some","nothing"]], tf.string)
+            tf.rank(rank2_tensor)
+            ----> used to find the nested list in data or object given in TF
+
+shape of tensors:
+              returns a list of frequency of data available in total data
+              rank2_tensor.shape
+
+changing shape:
+	tensor1 = tf.ones([1,2,3])  # creates a tensor full of ones
+	tensor2 = tf reshape(tensor1, [2,3,1]) # reshapes the tensor1 like [2,3,1]
+	tensor3 = tf.reshape(tensor2, [3, -1]) # gives a shape format [3,2]
+
+
+Types of Tensors:
+	-->Variable
+	-->Constant
+	-->PlaceHolder
+	-->SparseTensor
+
+Evaluating Tensors:
+	To evaluate tf we need a session()
+
+	with tf.Session() as session_name: #creates session using the default graph
+		tensor_name.eval()
+
+
+sample data below :
+dftrain=pd.read_csv('https://storage.googleapis.com/tf-datasets/titanic/train.csv')
+dfeval=pd.read_csv('https://storage.googleapis.com/tf-datasets/titanic/eval.csv')
+y_train = dftrain.pop('survived')
+y_eval = dfeval.pop('survived')
+print(y_train)
+
+if we want to locate any specific row use data_name.loc[index]
+
+data_name.describe() -->  more statisttical analysis of given data
+
+data_name.row_name.hist(condtn) -->  plots a histogram with given data
+
+data_name.row_name.value_count().plot() --> to count and pot a bar graph
+
+pd.comcat([dftrain, y_train], axis=1).groupby('sex').survived.mean().plot(kind='barh).set_xlabel('% survive)
