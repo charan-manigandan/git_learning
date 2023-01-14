@@ -47,3 +47,50 @@ data_name.row_name.hist(condtn) -->  plots a histogram with given data
 data_name.row_name.value_count().plot() --> to count and pot a bar graph
 
 pd.comcat([dftrain, y_train], axis=1).groupby('sex').survived.mean().plot(kind='barh).set_xlabel('% survive)
+
+
+
+The Training ProcessSo we are almost done preparing our dataset and I feel as though it's a good time to explain how our model is trained. 
+Specifically how input data is fed to our model.For this specific model data is going to be streamed into it in small batches of 32. 
+
+This means we will not feed the entire dataset to our model at once, but simply small batches of entries. We will actually feed these batches to our
+model multiple times according to the number of epochs.An epoch is simply one stream of our entire dataset. The number of epochs we define is the amount 
+of times our model will see the entire dataset. 
+
+We use multiple epochs in hope after seeing the same data multiple times the model will better 
+determine how to estimate it.Ex. if we have 10 ephocs, our model will see the same dataset 10 times.Since we need to feed our data in batches 
+and multiple times we need to create something called an input function. The input function simply defines how our dataset will be converted 
+into batches at each epoch.
+
+Input Function
+	The TensorFlow model we are going to use requires that the data we pass it comes in as a tf.data.Dataset object. 
+  This means we must create a input function that can convert our current pandas dataframe into that object.Below you'll see a seemingly complicated input function, 
+  this is straight from the TensorFlow documentation(https://www.tensorflow.org/tutorials/estimator/linear). I've commented as much as I can to make it understandble, 
+  but you may want to refer to the documentation for a detailed explination of each method.
+  
+  def make_input_fn(data_df, label_df, num_epochs -10, shuffle-True, batch_size=32):
+  	def input function(): # inner function, this will be returned 
+		ds=tf.data.Dataset.from tensor_slices((dict(data_df), label_df)) # create tf.data.Dataset object with data and its la 
+		if shuffle: 	ds=ds.shuffle(1000) # randomize order of data 
+		ds=ds.batch(batch_size).repeat(num_epochs) # split dataset into batches of 32 and repeat process for number of epocs epoc 
+		return ds # return a batch of the dataset 
+	return input_function #return a function object for use 
+
+train_input_fn = make_input_fn(dftrain, y_train) # here we will call the input function that was returned
+eval_input_fn make_input_fn(dfeval, y_eval, num_epochs 1, shuffle=False)
+
+linear_est = tf.estimator.LinearClassifier(feature_columns=feature_columns)
+
+linear_est.train(train_input_fn) # train
+result = linear_est.evaluate(eval_input_fn) # get model metrics/stats by testing on tetsing data
+clear output() #clears consoke output 
+print(result['accuracy']) # the result variable is simply a dict of stats about our model
+				
+NOTE : TO GET MORE ACCURACY OF THE TRAINED MODEL CHANGE THE EPOCHS NOR CLEAN THE DATA MORE FURTHER
+	As the Data gets shuffled for each time to get understaning of data we get a change always in output
+				
+result = list(linear_est.predict(eval_input_fn))
+print(dfeval.loc[2])  # this loc tf will give us the details present in the list . eg: sex, age, siblings, fare, class, etc.
+print(y_eval.loc[2])
+print(result[0]['probabilities'][1])	 # prints the survival rate of the above trained data			
+				
