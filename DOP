@@ -1,0 +1,18 @@
+Traditional Waterfall Method
+
+|Requirement and    |
+|gathering analysis |---
+       |               ↓
+       |           | Design |------
+       |                         ↓
+       |               | implement |---
+       |                             ↓
+       |                       | Test |---
+       |                                  ↓
+       |                          | Deploy |-----
+       |                                        ↓
+       |                                 | Maintanance |
+                                   
+                    
+              
+           
